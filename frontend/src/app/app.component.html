@@ -1,0 +1,54 @@
+<main class="main">
+  <div class="content">
+    @if (state$|async; as state) {
+
+      <div class="left-side" [formGroup]="requestConfig">
+        <div class="pill-group">
+          Request type:
+          @for (item of requestTypes; track item) {
+            <div class="rb-con">
+              <input type="radio" [id]="'type__' + item" name="type" [value]="item" formControlName="type"/>
+              <label [for]="'type__' + item">{{ item }}</label>
+            </div>
+          }
+        </div>
+
+        <div class="pill-group">
+          Request size:
+          @for (item of requestSizes; track item) {
+            <div class="rb-con">
+              <input type="radio" [id]="'size__' + item" name="size" [value]="item" formControlName="size"/>
+              <label [for]="'size__' + item">{{ item }}</label>
+            </div>
+          }
+        </div>
+
+        <button class="pill" (click)="start()" [disabled]="state[0] === 'pending'">
+          <span>Start</span>
+        </button>
+      </div>
+
+      <div class="divider" role="separator" aria-label="Divider"></div>
+
+      <div class="right-side">
+        @switch (state[0]) {
+          @case ('empty') {
+            <p>Choose request parameters on the left and click "Start"</p>
+          }
+          @case ('pending') {
+            <p>{{ state[1] }}</p>
+          }
+          @case ('done') {
+            <p>{{ state[1] }}</p>
+            <p class="output">{{ state[2] | json }}</p>
+          }
+          @case ('error') {
+            <p>An error occurred:</p>
+            <p class="output">{{ state[1] }}</p>
+          }
+        }
+      </div>
+
+    }
+  </div>
+</main>
