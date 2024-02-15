@@ -1,6 +1,7 @@
 package blue.muffin.roundtrips;
 
 import blue.muffin.models.Json;
+import blue.muffin.models.Msgpack;
 import net.datafaker.Faker;
 
 import java.util.Locale;
@@ -12,6 +13,13 @@ public class DataFactory {
 
     public static Json.EntityRef smallObjectJson() {
         return Json.EntityRef.builder()
+                .id(UUID.randomUUID().toString())
+                .name(faker.country().name())
+                .build();
+    }
+
+    public static Msgpack.EntityRef smallObjectMsgpack() {
+        return Msgpack.EntityRef.builder()
                 .id(UUID.randomUUID().toString())
                 .name(faker.country().name())
                 .build();
@@ -32,6 +40,35 @@ public class DataFactory {
                 .permissions(
                         faker.collection(() ->
                                         Json.ComponentRef.builder()
+                                                .componentId(faker.food().fruit())
+                                                .allowed(
+                                                        faker.collection(() -> faker.number().randomDigit())
+                                                                .maxLen(8)
+                                                                .generate()
+                                                )
+                                                .build()
+                                )
+                                .len(250, 350)
+                                .generate()
+                )
+                .build();
+    }
+
+    public static Msgpack.AccountData mediumObjectMsgpack() {
+        return Msgpack.AccountData.builder()
+                .user(
+                        Msgpack.UserRef.builder()
+                                .id(UUID.randomUUID().toString())
+                                .firstName(faker.name().firstName())
+                                .lastName(faker.name().lastName())
+                                .email(faker.internet().emailAddress())
+                                .phone(faker.phoneNumber().phoneNumberInternational())
+                                .avatar(faker.avatar().image())
+                                .build()
+                )
+                .permissions(
+                        faker.collection(() ->
+                                        Msgpack.ComponentRef.builder()
                                                 .componentId(faker.food().fruit())
                                                 .allowed(
                                                         faker.collection(() -> faker.number().randomDigit())
@@ -141,6 +178,121 @@ public class DataFactory {
                                                                 .frames(
                                                                         faker.collection(() ->
                                                                                         Json.PropFrame.builder()
+                                                                                                .id(faker.number().randomDigit())
+                                                                                                .title(faker.food().vegetable())
+                                                                                                .refKey(faker.compass().word())
+                                                                                                .ignoredOnExchange(faker.bool().bool())
+                                                                                                .shapeId(faker.number().randomDigit())
+                                                                                                .build()
+                                                                                )
+                                                                                .len(3, 8)
+                                                                                .generate()
+                                                                )
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                                .len(15, 25)
+                                .generate()
+                )
+                .build();
+    }
+
+    public static Msgpack.SubWrapper largeObjectMsgpack() {
+        return Msgpack.SubWrapper.builder()
+                .id(faker.number().randomDigit())
+                .revision(faker.number().randomDigit())
+                .containers(
+                        faker.collection(() ->
+                                        Msgpack.Container.builder()
+                                                .id(faker.number().randomDigit())
+                                                .refKey(faker.compass().word())
+                                                .posX(faker.number().randomDigit())
+                                                .posY(faker.number().randomDigit())
+                                                .sizePx(faker.number().randomDigit())
+                                                .sizeMm(faker.number().randomDigit())
+                                                .attrA(faker.number().randomDigit())
+                                                .attrB(faker.number().randomDigit())
+                                                .children(
+                                                        faker.collection(() ->
+                                                                        Msgpack.ContainedObject.builder()
+                                                                                .id(faker.number().randomDigit())
+                                                                                .wrapperId(faker.number().randomDigit())
+                                                                                .frameId(faker.number().randomDigit())
+                                                                                .thickness(faker.number().randomDigit())
+                                                                                .outlines(
+                                                                                        faker.collection(() ->
+                                                                                                        Msgpack.PropOutline.builder()
+                                                                                                                .id(faker.number().randomDigit())
+                                                                                                                .thickness(faker.number().randomDigit())
+                                                                                                                .wrapperId(faker.number().randomDigit())
+                                                                                                                .posX(faker.number().randomDigit())
+                                                                                                                .posY(faker.number().randomDigit())
+                                                                                                                .sizePx(faker.number().randomDigit())
+                                                                                                                .sizeMm(faker.number().randomDigit())
+                                                                                                                .build()
+                                                                                                )
+                                                                                                .len(1, 3)
+                                                                                                .generate()
+                                                                                )
+                                                                                .frame(
+                                                                                        Msgpack.PropFrame.builder()
+                                                                                                .id(faker.number().randomDigit())
+                                                                                                .title(faker.food().vegetable())
+                                                                                                .refKey(faker.compass().word())
+                                                                                                .ignoredOnExchange(faker.bool().bool())
+                                                                                                .shapeId(faker.number().randomDigit())
+                                                                                                .build()
+                                                                                )
+                                                                                .parentId(faker.number().randomDigit())
+                                                                                .refKey(faker.compass().word())
+                                                                                .posX(faker.number().randomDigit())
+                                                                                .posY(faker.number().randomDigit())
+                                                                                .sizePx(faker.number().randomDigit())
+                                                                                .sizeMm(faker.number().randomDigit())
+                                                                                .isVisible(faker.bool().bool())
+                                                                                .isEditable(faker.bool().bool())
+                                                                                .isAccessible(faker.bool().bool())
+                                                                                .isTested(faker.bool().bool())
+                                                                                .contentLimit(faker.number().randomDigit())
+                                                                                .details(
+                                                                                        Msgpack.PropDetailed.builder()
+                                                                                                .attrA(faker.bool().bool())
+                                                                                                .attrB(faker.bool().bool())
+                                                                                                .attrC(faker.number().randomDigit())
+                                                                                                .attrD(faker.number().randomDigit())
+                                                                                                .prop1(
+                                                                                                        Msgpack.PropComplex1.builder()
+                                                                                                                .name(faker.lorem().word())
+                                                                                                                .attrA(faker.number().randomDigit())
+                                                                                                                .attrB(faker.number().randomDigit())
+                                                                                                                .build()
+                                                                                                )
+                                                                                                .prop2(
+                                                                                                        Msgpack.PropComplex2.builder()
+                                                                                                                .keyParent(faker.lorem().word())
+                                                                                                                .keyChild(faker.lorem().word())
+                                                                                                                .build()
+                                                                                                )
+                                                                                                .build()
+                                                                                )
+                                                                                .build()
+                                                                )
+                                                                .len(3, 8)
+                                                                .generate()
+                                                )
+                                                .attributes(
+                                                        Msgpack.ContainerAttributes.builder()
+                                                                .id(faker.number().randomDigit())
+                                                                .title(faker.food().spice())
+                                                                .refKey(faker.compass().word())
+                                                                .ignoredOnExchange(faker.bool().bool())
+                                                                .refPointId(faker.number().randomDigit())
+                                                                .attrA(faker.number().randomDigit())
+                                                                .attrB(faker.number().randomDigit())
+                                                                .frames(
+                                                                        faker.collection(() ->
+                                                                                        Msgpack.PropFrame.builder()
                                                                                                 .id(faker.number().randomDigit())
                                                                                                 .title(faker.food().vegetable())
                                                                                                 .refKey(faker.compass().word())
