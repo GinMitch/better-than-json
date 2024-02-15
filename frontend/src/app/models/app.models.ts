@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-export type RequestType = '';
+export type RequestType = 'json';
 
 export type RequestSize = 'small' | 'medium' | 'large';
 

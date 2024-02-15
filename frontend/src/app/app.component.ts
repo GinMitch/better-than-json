@@ -7,12 +7,14 @@ import { BehaviorSubject, last, Observable, of, repeat } from 'rxjs';
 import { requestsCount, requestSizes, requestTypes } from './constants';
 import { DemoState, RequestSize, RequestType } from './models/app.models';
 
+import { JsonRequestService } from './services/json-request.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, HttpClientModule, ReactiveFormsModule],
   providers: [
+    JsonRequestService,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -23,11 +25,12 @@ export class AppComponent {
   public readonly requestTypes = requestTypes;
   public readonly requestSizes = requestSizes;
   public readonly requestConfig = new FormGroup({
-    type: new FormControl<RequestType>('', { nonNullable: true }),
+    type: new FormControl<RequestType>('json', { nonNullable: true }),
     size: new FormControl<RequestSize>('small', { nonNullable: true }),
   });
 
   constructor(
+    @Inject(JsonRequestService) private readonly jsonRequestService: JsonRequestService,
   ) {
   }
 
@@ -62,6 +65,8 @@ export class AppComponent {
 
   private getMethod(type: RequestType, size: RequestSize): Observable<unknown> {
     switch (type) {
+      case 'json':
+        return this.jsonRequestService[size]();
       default:
         return of({});
     }
