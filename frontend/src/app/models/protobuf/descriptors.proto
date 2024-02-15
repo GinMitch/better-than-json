@@ -1,0 +1,118 @@
+syntax = "proto3";
+package blue.muffin.models.Protobuf;
+
+option java_package = "blue.muffin.models";
+option java_outer_classname = "Protobuf";
+
+message EntityRef {
+  string id = 1;
+  string name = 2;
+}
+
+message AccountData {
+  UserRef user = 1;
+  repeated ComponentRef permissions = 2;
+}
+
+message UserRef {
+  string id = 1;
+  string first_name = 2;
+  string last_name = 3;
+  string email = 4;
+  optional string phone = 5;
+  optional string avatar = 6;
+}
+
+message ComponentRef {
+  string component_id = 1;
+  repeated int32 allowed = 2;
+}
+
+message PropComplex1 {
+  string name = 1;
+  int32 attr_a = 2;
+  int32 attr_b = 3;
+}
+
+message PropComplex2 {
+  string key_parent = 1;
+  string key_child = 2;
+}
+
+message PropDetailed {
+  bool attr_a = 1;
+  bool attr_b = 2;
+  int32 attr_c = 3;
+  int32 attr_d = 4;
+  PropComplex1 prop1 = 5;
+  PropComplex2 prop2 = 6;
+}
+
+message PropFrame {
+  int32 id = 1;
+  string title = 2;
+  string ref_key = 3;
+  bool ignored_on_exchange = 4;
+  int32 shape_id = 5;
+}
+
+message PropOutline {
+  int32 id = 1;
+  int32 thickness = 2;
+  int32 wrapper_id = 3;
+  int32 pos_x = 4;
+  int32 pos_y = 5;
+  int32 size_px = 6;
+  int32 size_mm = 7;
+}
+
+message ContainedObject {
+  int32 id = 1;
+  int32 wrapper_id = 2;
+  int32 frame_id = 3;
+  int32 thickness = 4;
+  repeated PropOutline outlines = 5;
+  PropFrame frame = 6;
+  int32 parent_id = 7;
+  string ref_key = 8;
+  int32 pos_x = 9;
+  int32 pos_y = 10;
+  int32 size_px = 11;
+  int32 size_mm = 12;
+  bool is_visible = 13;
+  bool is_editable = 14;
+  bool is_accessible = 15;
+  bool is_tested = 16;
+  int32 content_limit = 17;
+  PropDetailed details = 18;
+}
+
+message ContainerAttributes {
+  int32 id = 1;
+  string title = 2;
+  string ref_key = 3;
+  bool ignored_on_exchange = 4;
+  int32 ref_point_id = 5;
+  int32 attr_a = 6;
+  int32 attr_b = 7;
+  repeated PropFrame frames = 8;
+}
+
+message Container {
+  int32 id = 1;
+  string ref_key = 2;
+  int32 pos_x = 3;
+  int32 pos_y = 4;
+  int32 size_px = 5;
+  int32 size_mm = 6;
+  int32 attr_a = 7;
+  int32 attr_b = 8;
+  repeated ContainedObject children = 9;
+  ContainerAttributes attributes = 10;
+}
+
+message SubWrapper {
+  int32 id = 1;
+  int32 revision = 2;
+  repeated Container containers = 3;
+}

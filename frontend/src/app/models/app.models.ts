@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 
-export type RequestType = 'json' | 'msgpack';
+export type RequestType = 'json' | 'msgpack' | 'protobuf';
 
 export type RequestSize = 'small' | 'medium' | 'large';
 

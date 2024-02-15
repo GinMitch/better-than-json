@@ -19,7 +19,9 @@
     "@angular/platform-browser-dynamic": "^17.0.0",
     "@angular/router": "^17.0.0",
     "@faker-js/faker": "^8.3.1",
+    "@improbable-eng/grpc-web": "^0.15.0",
     "@msgpack/msgpack": "^3.0.0-beta2",
+    "google-protobuf": "^3.21.2",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.2"
@@ -28,6 +30,9 @@
     "@angular-devkit/build-angular": "^17.0.8",
     "@angular/cli": "^17.0.8",
     "@angular/compiler-cli": "^17.0.0",
+    "@types/google-protobuf": "^3.15.12",
+    "protoc-gen-js": "^3.21.2",
+    "ts-protoc-gen": "^0.15.0",
     "typescript": "~5.2.2"
   },
   "license": "MIT",

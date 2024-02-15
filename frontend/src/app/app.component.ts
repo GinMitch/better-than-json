@@ -9,6 +9,7 @@ import { DemoState, RequestSize, RequestType } from './models/app.models';
 
 import { JsonRequestService } from './services/json-request.service';
 import { MsgpackRequestService } from './services/msgpack-request.service';
+import { ProtobufRequestService } from './services/protobuf-request.service';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +18,7 @@ import { MsgpackRequestService } from './services/msgpack-request.service';
   providers: [
     JsonRequestService,
     MsgpackRequestService,
+    ProtobufRequestService,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -34,6 +36,7 @@ export class AppComponent {
   constructor(
     @Inject(JsonRequestService) private readonly jsonRequestService: JsonRequestService,
     @Inject(MsgpackRequestService) private readonly msgpackRequestService: MsgpackRequestService,
+    @Inject(ProtobufRequestService) private readonly protobufRequestService: ProtobufRequestService,
   ) {
   }
 
@@ -72,6 +75,8 @@ export class AppComponent {
         return this.jsonRequestService[size]();
       case 'msgpack':
         return this.msgpackRequestService[size]();
+      case 'protobuf':
+        return this.protobufRequestService[size]();
       default:
         return of({});
     }
