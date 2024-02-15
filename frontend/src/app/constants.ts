@@ -1,6 +1,6 @@
 import { RequestSize, RequestType } from './models/app.models';
 
-export const requestTypes: RequestType[] = ['json'];
+export const requestTypes: RequestType[] = ['json', 'msgpack'];
 
 export const requestSizes: RequestSize[] = ['small', 'medium', 'large'];
 

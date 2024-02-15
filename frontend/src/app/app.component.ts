@@ -8,6 +8,7 @@ import { requestsCount, requestSizes, requestTypes } from './constants';
 import { DemoState, RequestSize, RequestType } from './models/app.models';
 
 import { JsonRequestService } from './services/json-request.service';
+import { MsgpackRequestService } from './services/msgpack-request.service';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { JsonRequestService } from './services/json-request.service';
   imports: [CommonModule, HttpClientModule, ReactiveFormsModule],
   providers: [
     JsonRequestService,
+    MsgpackRequestService,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -31,6 +33,7 @@ export class AppComponent {
 
   constructor(
     @Inject(JsonRequestService) private readonly jsonRequestService: JsonRequestService,
+    @Inject(MsgpackRequestService) private readonly msgpackRequestService: MsgpackRequestService,
   ) {
   }
 
@@ -67,6 +70,8 @@ export class AppComponent {
     switch (type) {
       case 'json':
         return this.jsonRequestService[size]();
+      case 'msgpack':
+        return this.msgpackRequestService[size]();
       default:
         return of({});
     }
