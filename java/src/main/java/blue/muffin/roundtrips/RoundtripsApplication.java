@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter;
+import org.springframework.http.converter.protobuf.ProtobufHttpMessageConverter;
 
 @SpringBootApplication
 public class RoundtripsApplication {
@@ -19,6 +20,16 @@ public class RoundtripsApplication {
                 new MediaType("application", "x-msgpack")) {
         };
     }
+
+    @Bean
+    ProtobufHttpMessageConverter protobufHttpMessageConverter() {
+        return new ProtobufHttpMessageConverter();
+    }
+
+//    @Bean
+//    RestTemplate restTemplate(ProtobufHttpMessageConverter hmc) {
+//        return new RestTemplate(Collections.singletonList(hmc));
+//    }
 
     public static void main(String[] args) {
         SpringApplication.run(RoundtripsApplication.class, args);

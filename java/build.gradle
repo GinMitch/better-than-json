@@ -25,6 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'net.datafaker:datafaker:2.0.2'
     implementation 'org.msgpack:jackson-dataformat-msgpack:0.9.6'
+    implementation 'com.google.protobuf:protobuf-java:3.25.1'
 
     compileOnly 'org.projectlombok:lombok'
 

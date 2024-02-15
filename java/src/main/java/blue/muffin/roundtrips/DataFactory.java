@@ -2,6 +2,7 @@ package blue.muffin.roundtrips;
 
 import blue.muffin.models.Json;
 import blue.muffin.models.Msgpack;
+import blue.muffin.models.Protobuf;
 import net.datafaker.Faker;
 
 import java.util.Locale;
@@ -22,6 +23,13 @@ public class DataFactory {
         return Msgpack.EntityRef.builder()
                 .id(UUID.randomUUID().toString())
                 .name(faker.country().name())
+                .build();
+    }
+
+    public static Protobuf.EntityRef smallObjectProtobuf() {
+        return Protobuf.EntityRef.newBuilder()
+                .setId(UUID.randomUUID().toString())
+                .setName(faker.country().name())
                 .build();
     }
 
@@ -71,6 +79,35 @@ public class DataFactory {
                                         Msgpack.ComponentRef.builder()
                                                 .componentId(faker.food().fruit())
                                                 .allowed(
+                                                        faker.collection(() -> faker.number().randomDigit())
+                                                                .maxLen(8)
+                                                                .generate()
+                                                )
+                                                .build()
+                                )
+                                .len(250, 350)
+                                .generate()
+                )
+                .build();
+    }
+
+    public static Protobuf.AccountData mediumObjectProtobuf() {
+        return Protobuf.AccountData.newBuilder()
+                .setUser(
+                        Protobuf.UserRef.newBuilder()
+                                .setId(UUID.randomUUID().toString())
+                                .setFirstName(faker.name().firstName())
+                                .setLastName(faker.name().lastName())
+                                .setEmail(faker.internet().emailAddress())
+                                .setPhone(faker.phoneNumber().phoneNumberInternational())
+                                .setAvatar(faker.avatar().image())
+                                .build()
+                )
+                .addAllPermissions(
+                        faker.collection(() ->
+                                        Protobuf.ComponentRef.newBuilder()
+                                                .setComponentId(faker.food().fruit())
+                                                .addAllAllowed(
                                                         faker.collection(() -> faker.number().randomDigit())
                                                                 .maxLen(8)
                                                                 .generate()
@@ -298,6 +335,121 @@ public class DataFactory {
                                                                                                 .refKey(faker.compass().word())
                                                                                                 .ignoredOnExchange(faker.bool().bool())
                                                                                                 .shapeId(faker.number().randomDigit())
+                                                                                                .build()
+                                                                                )
+                                                                                .len(3, 8)
+                                                                                .generate()
+                                                                )
+                                                                .build()
+                                                )
+                                                .build()
+                                )
+                                .len(15, 25)
+                                .generate()
+                )
+                .build();
+    }
+
+    public static Protobuf.SubWrapper largeObjectProtobuf() {
+        return Protobuf.SubWrapper.newBuilder()
+                .setId(faker.number().randomDigit())
+                .setRevision(faker.number().randomDigit())
+                .addAllContainers(
+                        faker.collection(() ->
+                                        Protobuf.Container.newBuilder()
+                                                .setId(faker.number().randomDigit())
+                                                .setRefKey(faker.compass().word())
+                                                .setPosX(faker.number().randomDigit())
+                                                .setPosY(faker.number().randomDigit())
+                                                .setSizePx(faker.number().randomDigit())
+                                                .setSizeMm(faker.number().randomDigit())
+                                                .setAttrA(faker.number().randomDigit())
+                                                .setAttrB(faker.number().randomDigit())
+                                                .addAllChildren(
+                                                        faker.collection(() ->
+                                                                        Protobuf.ContainedObject.newBuilder()
+                                                                                .setId(faker.number().randomDigit())
+                                                                                .setWrapperId(faker.number().randomDigit())
+                                                                                .setFrameId(faker.number().randomDigit())
+                                                                                .setThickness(faker.number().randomDigit())
+                                                                                .addAllOutlines(
+                                                                                        faker.collection(() ->
+                                                                                                        Protobuf.PropOutline.newBuilder()
+                                                                                                                .setId(faker.number().randomDigit())
+                                                                                                                .setThickness(faker.number().randomDigit())
+                                                                                                                .setWrapperId(faker.number().randomDigit())
+                                                                                                                .setPosX(faker.number().randomDigit())
+                                                                                                                .setPosY(faker.number().randomDigit())
+                                                                                                                .setSizePx(faker.number().randomDigit())
+                                                                                                                .setSizeMm(faker.number().randomDigit())
+                                                                                                                .build()
+                                                                                                )
+                                                                                                .len(1, 3)
+                                                                                                .generate()
+                                                                                )
+                                                                                .setFrame(
+                                                                                        Protobuf.PropFrame.newBuilder()
+                                                                                                .setId(faker.number().randomDigit())
+                                                                                                .setTitle(faker.food().vegetable())
+                                                                                                .setRefKey(faker.compass().word())
+                                                                                                .setIgnoredOnExchange(faker.bool().bool())
+                                                                                                .setShapeId(faker.number().randomDigit())
+                                                                                                .build()
+                                                                                )
+                                                                                .setParentId(faker.number().randomDigit())
+                                                                                .setRefKey(faker.compass().word())
+                                                                                .setPosX(faker.number().randomDigit())
+                                                                                .setPosY(faker.number().randomDigit())
+                                                                                .setSizePx(faker.number().randomDigit())
+                                                                                .setSizeMm(faker.number().randomDigit())
+                                                                                .setIsVisible(faker.bool().bool())
+                                                                                .setIsEditable(faker.bool().bool())
+                                                                                .setIsAccessible(faker.bool().bool())
+                                                                                .setIsTested(faker.bool().bool())
+                                                                                .setContentLimit(faker.number().randomDigit())
+                                                                                .setDetails(
+                                                                                        Protobuf.PropDetailed.newBuilder()
+                                                                                                .setAttrA(faker.bool().bool())
+                                                                                                .setAttrB(faker.bool().bool())
+                                                                                                .setAttrC(faker.number().randomDigit())
+                                                                                                .setAttrD(faker.number().randomDigit())
+                                                                                                .setProp1(
+                                                                                                        Protobuf.PropComplex1.newBuilder()
+                                                                                                                .setName(faker.lorem().word())
+                                                                                                                .setAttrA(faker.number().randomDigit())
+                                                                                                                .setAttrB(faker.number().randomDigit())
+                                                                                                                .build()
+                                                                                                )
+                                                                                                .setProp2(
+                                                                                                        Protobuf.PropComplex2.newBuilder()
+                                                                                                                .setKeyParent(faker.lorem().word())
+                                                                                                                .setKeyChild(faker.lorem().word())
+                                                                                                                .build()
+                                                                                                )
+                                                                                                .build()
+                                                                                )
+                                                                                .build()
+                                                                )
+                                                                .len(3, 8)
+                                                                .generate()
+                                                )
+                                                .setAttributes(
+                                                        Protobuf.ContainerAttributes.newBuilder()
+                                                                .setId(faker.number().randomDigit())
+                                                                .setTitle(faker.food().spice())
+                                                                .setRefKey(faker.compass().word())
+                                                                .setIgnoredOnExchange(faker.bool().bool())
+                                                                .setRefPointId(faker.number().randomDigit())
+                                                                .setAttrA(faker.number().randomDigit())
+                                                                .setAttrB(faker.number().randomDigit())
+                                                                .addAllFrames(
+                                                                        faker.collection(() ->
+                                                                                        Protobuf.PropFrame.newBuilder()
+                                                                                                .setId(faker.number().randomDigit())
+                                                                                                .setTitle(faker.food().vegetable())
+                                                                                                .setRefKey(faker.compass().word())
+                                                                                                .setIgnoredOnExchange(faker.bool().bool())
+                                                                                                .setShapeId(faker.number().randomDigit())
                                                                                                 .build()
                                                                                 )
                                                                                 .len(3, 8)
